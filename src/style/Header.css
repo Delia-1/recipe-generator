@@ -1,0 +1,34 @@
+
+.header-container {
+  position:sticky; /* Ensures the header stays at the top */
+  top: 0; /* Aligns it to the top of the page */
+  left: 0;
+  width: 100%; /* Spans the entire width of the page */
+  z-index: 1000; /* Ensures it stays above other content */
+  display: flex;
+  align-items: center; /* Aligns items vertically */
+  background-color: #ffffff;
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.10), 0px 1px 2px 0px rgba(0, 0, 0, 0.06);
+  padding: 10px 20px; /* Adds some padding for better spacing */
+  justify-content: center;
+}
+
+  header {
+    display: flex;
+    align-items: center;
+  }
+
+  .ust-icon{
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+
+  .header-title {
+    font-family: "Nunito";
+    font-weight: 400 ;
+    padding: 0;
+    margin: 0;
+    font-size: 44px;
+
+  }
