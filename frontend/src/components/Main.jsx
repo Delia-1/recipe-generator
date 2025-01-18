@@ -33,8 +33,14 @@ export default function Main() {
   }
 
   async function toggleRecipe() {
-    const recipe = await getRecipeFromChefClaude(list);
-    setRecipeGenerated(recipe); // Update recipeGenerated state
+    console.log("toggleRecipe called");
+    try {
+      const recipe = await getRecipeFromChefClaude(list);
+      console.log("Recipe fetched:", recipe);
+      setRecipeGenerated(recipe); // Update recipeGenerated state
+    } catch (error) {
+      console.error("Error fetching recipe:", error);
+    }
   }
 
   const ingredientsList = list.map((item, index) => (

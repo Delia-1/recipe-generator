@@ -8,4 +8,13 @@ export default defineConfig({
     outDir: './dist', // Ensure the dist folder is inside the frontend directory
     emptyOutDir: true, // Automatically clean the directory before each build
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
+  },
 });

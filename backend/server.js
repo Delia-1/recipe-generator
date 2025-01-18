@@ -2,23 +2,27 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors'; // Import CORS
 import Anthropic from '@anthropic-ai/sdk';
 
 dotenv.config();
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 3000;
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
+// Enable CORS
+app.use(cors());
+
 // Serve the static files from the frontend dist folder
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
 // Backend API route
-app.post('/get-recipe', express.json(), async (req, res) => {
+app.post('/api/get-recipe', express.json(), async (req, res) => {
   const { ingredients } = req.body;
 
   try {
