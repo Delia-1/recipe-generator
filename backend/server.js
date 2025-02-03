@@ -17,8 +17,9 @@ const anthropic = new Anthropic({
 });
 
 const corsOptions = {
-  origin: ["https://your-frontend.com"], // Change to your domain
+  origin: ["https://your-frontend.com", "https://recipe-generator-frontend-omega.vercel.app"], // ✅ Your frontend URL], // Change to your domain
   methods: "GET,POST",
+  allowedHeaders: ["Content-Type"],
   credentials: true,
 };
 
