@@ -1,17 +1,21 @@
 import './style/App.css'
 import Header from './components/Header'
 import Main from './components/Main'
+import Footer from './components/Footer'
 
 function App() {
+  console.log(import.meta.env.VITE_BACKEND_URL);
+
 
 
   return (
-    <>
-    <nav>
+    <div className="app">
       <Header />
-      <Main />
+    <nav className="stupid-nav">
+      <Main className="main-content" />
     </nav>
-    </>
+      <Footer/>
+    </div>
   )
 }
 

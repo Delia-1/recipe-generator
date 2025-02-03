@@ -1,22 +1,18 @@
 
 import PropTypes from "prop-types";
+import ReactMarkdown from "react-markdown";
 
-export default function Recipe({ recipeGenerated }) {
+
+export default function Recipe(props) {
+
   return (
-    <section>
-      <h2>Recipe</h2>
-      {recipeGenerated ? (
-        <div>
-          <h3>Generated Recipe:</h3>
-          <p>{recipeGenerated}</p>
-        </div>
-      ) : (
-        <p>Click Find recipe to generate a recipe based on your ingredients!</p>
-      )}
+    <section className="suggested-recipe-container" aria-live="polite">
+      <h1>Cheffe Délia recommends:</h1>
+      <ReactMarkdown>{props.recipe}</ReactMarkdown>
     </section>
   );
 }
 
 Recipe.propTypes = {
-  recipeGenerated: PropTypes.string.isRequired,
+  recipe: PropTypes.string.isRequired,
 };

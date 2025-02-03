@@ -1,6 +1,5 @@
 export async function getRecipeFromChefClaude(list) {
-  console.log("API called with ingredients:", list);
-  const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/get-recipe`, {
+  const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/get-recipe`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ ingredients: list }),
@@ -11,6 +10,5 @@ export async function getRecipeFromChefClaude(list) {
   }
 
   const data = await response.json();
-  console.log("Response from server:", data);
   return data.recipe;
 }
