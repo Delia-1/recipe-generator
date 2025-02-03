@@ -2,8 +2,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import express from 'express';
 import dotenv from 'dotenv';
-import cors from 'cors'; // Import CORS
+import cors from 'cors';
 import Anthropic from '@anthropic-ai/sdk';
+import rateLimit from 'express-rate-limit';
 
 dotenv.config();
 
@@ -15,19 +16,32 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-// Enable CORS
-app.use(cors());
+const corsOptions = {
+  origin: ["https://your-frontend.com"], // Change to your domain
+  methods: "GET,POST",
+  credentials: true,
+};
 
-// Serve the static files from the frontend dist folder
+
+app.use(cors(corsOptions));
+
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
-// Backend API route
-app.post('/get-recipe', express.json(), async (req, res) => {
+// ✅ Define Rate Limiting Middleware
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 5, // ⛔ Limit each IP to 5 requests per minute
+  message: { error: 'Too many requests, please try again later.' }, // Response when limit is exceeded
+  headers: true, // Show rate limit info in response headers
+});
+
+// ✅ Apply rate limiting **ONLY** to the `/get-recipe` route
+app.post('/get-recipe', limiter, express.json(), async (req, res) => {
   const { ingredients } = req.body;
 
   const SYSTEM_PROMPT = `
 You are an assistant that receives a list of ingredients that a user has and suggests a recipe they could make with some or all of those ingredients. You don't need to use every ingredient they mention in your recipe. The recipe can include additional ingredients they didn't mention, but try not to include too many extra ingredients. Format your response in markdown to make it easier to render to a web page, NO additional text for introduce the recipe, NO conclusion.
-`
+`;
 
   try {
     const msg = await anthropic.messages.create({
@@ -49,7 +63,7 @@ You are an assistant that receives a list of ingredients that a user has and sug
   }
 });
 
-// Serve frontend for all other routes
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });

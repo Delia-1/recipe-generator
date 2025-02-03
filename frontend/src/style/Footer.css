@@ -1,6 +1,6 @@
 .footer {
   background: #C1292E;
-
+  box-shadow: 0px -3px 4px -1px rgb(0 0 0 / 28%);
   display: flex;
   align-items: center;
   justify-content: space-between;

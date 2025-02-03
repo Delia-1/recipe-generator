@@ -80,10 +80,13 @@ export default function Main() {
 
       {ingredientsList.length !== 0 &&  (
         <section className="ingredients-section">
-               {ingredientsList.length < 4 &&
-          <p>* Please add at least 4 ingredients 🍎</p> }
                 <section className="listPart">
         <h2 className="listPartText">Ingredients on hand:</h2>
+        <div style={{margin: "0.3rem 0"}}>
+
+        {ingredientsList.length < 4 &&
+          <p>* Please add at least 4 ingredients 🍎</p> }
+        </div>
         <ul className="listPartList">{ingredientsList}</ul>
           {list.length > 3 && (
             <button onClick={toggleRecipe} className="button-submit">
