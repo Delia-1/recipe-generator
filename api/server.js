@@ -33,7 +33,7 @@ const limiter = rateLimit({
 });
 
 // ✅ Apply rate limiting **ONLY** to the `/get-recipe` route
-app.post('/api/get-recipe', limiter, async (req, res) => {
+app.post('/', limiter, async (req, res) => {
   const { ingredients } = req.body;
 
   const SYSTEM_PROMPT = `
