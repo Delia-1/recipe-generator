@@ -1,5 +1,5 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
+// import path from 'path';
+// import { fileURLToPath } from 'url';
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -9,7 +9,7 @@ import rateLimit from 'express-rate-limit';
 dotenv.config();
 
 const app = express();
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 3000;
 
 const anthropic = new Anthropic({
@@ -22,7 +22,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve the static files from the frontend dist folder
-app.use(express.static(path.join(__dirname, '../frontend/dist')));
+// app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
 // ✅ Define Rate Limiting Middleware
 const limiter = rateLimit({
@@ -36,13 +36,13 @@ const limiter = rateLimit({
 app.post('/', limiter, async (req, res) => {
   const { ingredients } = req.body;
 
+
+  if (!ingredients || !Array.isArray(ingredients)) {
+    return res.status(400).json({ error: 'Invalid ingredients format' });
+  }
   const SYSTEM_PROMPT = `
 You are an assistant that receives a list of ingredients that a user has and suggests a recipe they could make with some or all of those ingredients. You don't need to use every ingredient they mention in your recipe. The recipe can include additional ingredients they didn't mention, but try not to include too many extra ingredients. Format your response in markdown to make it easier to render to a web page, NO additional text for introduce the recipe, NO conclusion.
 `;
-
-if (!ingredients || !Array.isArray(ingredients)) {
-  return res.status(400).json({ error: 'Invalid ingredients format' });
-}
 
 
   try {
@@ -65,11 +65,6 @@ if (!ingredients || !Array.isArray(ingredients)) {
   }
 });
 
-if (process.env.NODE_ENV !== "production") {
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
-  });
-}
 
 // ✅ Start the server Locally
 app.listen(PORT, () => {
