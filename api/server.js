@@ -16,16 +16,11 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-const corsOptions = {
-  origin: ["https://your-frontend.com", "https://recipe-generator-frontend-omega.vercel.app"], // ✅ Your frontend URL], // Change to your domain
-  methods: "GET,POST",
-  allowedHeaders: ["Content-Type"],
-  credentials: true,
-};
+// Enable CORS
+app.use(cors());
+app.use(express.json());
 
-
-app.use(cors(corsOptions));
-
+// Serve the static files from the frontend dist folder
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
 // ✅ Define Rate Limiting Middleware
@@ -37,12 +32,17 @@ const limiter = rateLimit({
 });
 
 // ✅ Apply rate limiting **ONLY** to the `/get-recipe` route
-app.post('/get-recipe', limiter, express.json(), async (req, res) => {
+app.post('/api/get-recipe', limiter, async (req, res) => {
   const { ingredients } = req.body;
 
   const SYSTEM_PROMPT = `
 You are an assistant that receives a list of ingredients that a user has and suggests a recipe they could make with some or all of those ingredients. You don't need to use every ingredient they mention in your recipe. The recipe can include additional ingredients they didn't mention, but try not to include too many extra ingredients. Format your response in markdown to make it easier to render to a web page, NO additional text for introduce the recipe, NO conclusion.
 `;
+
+if (!ingredients || !Array.isArray(ingredients)) {
+  return res.status(400).json({ error: 'Invalid ingredients format' });
+}
+
 
   try {
     const msg = await anthropic.messages.create({
@@ -64,11 +64,13 @@ You are an assistant that receives a list of ingredients that a user has and sug
   }
 });
 
-
+// Serve frontend for all other routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(`Backend server running at http://localhost:${PORT}`);
-});
+// app.listen(PORT, () => {
+//   console.log(`Backend server running at http://localhost:${PORT}`);
+// });
+
+export default app;
