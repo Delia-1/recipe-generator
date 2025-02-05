@@ -18,6 +18,7 @@ const anthropic = new Anthropic({
 
 // Enable CORS
 app.use(cors());
+
 app.use(express.json());
 
 // Serve the static files from the frontend dist folder
@@ -64,13 +65,13 @@ if (!ingredients || !Array.isArray(ingredients)) {
   }
 });
 
-// Serve frontend for all other routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+if (process.env.NODE_ENV !== "production") {
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+  });
+}
+
+// ✅ Start the server Locally
+app.listen(PORT, () => {
+  console.log(`Backend running at http://localhost:${PORT}`);
 });
-
-// app.listen(PORT, () => {
-//   console.log(`Backend server running at http://localhost:${PORT}`);
-// });
-
-export default app;

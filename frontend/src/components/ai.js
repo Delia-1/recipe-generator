@@ -1,9 +1,7 @@
-const API_URL = import.meta.env.MODE === "development"
-  ? import.meta.env.VITE_BACKEND_URL  // Use localhost in dev
-  : import.meta.env.VITE_BACKEND_URL_PROD; // Use Vercel in prod
-
 export async function getRecipeFromChefClaude(list) {
-  const response = await fetch(`${API_URL}/get-recipe`, {
+  const API_BASE_URL = import.meta.env.VITE_API_URL || ""; // Ensure dynamic backend URL
+
+  const response = await fetch(`${API_BASE_URL}/api/get-recipe`, { // Add /api to route
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ ingredients: list }),
