@@ -12,7 +12,7 @@ function App() {
     <div className="app">
       <Header />
     <nav className="stupid-nav">
-      <Main className="main-content" />
+      <Main  />
     </nav>
       <Footer/>
     </div>

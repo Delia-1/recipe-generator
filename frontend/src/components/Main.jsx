@@ -63,7 +63,7 @@ export default function Main() {
 
 
   return (
-    <>
+    <main className="main-content">
       <form onSubmit={addIngredient}>
         <input
           className="ingredients-input"
@@ -98,6 +98,6 @@ export default function Main() {
 
       {recipe && <Recipe  recipe={recipe} />}
 
-    </>
+    </main>
   );
 }
