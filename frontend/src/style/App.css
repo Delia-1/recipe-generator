@@ -177,4 +177,8 @@ form {
       left: 10px;
 
   }
+  .text-add-ing {
+    position: relative;
+    top: 16px;
+  }
 }
