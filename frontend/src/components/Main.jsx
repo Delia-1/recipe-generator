@@ -66,12 +66,13 @@ export default function Main() {
     <main className="main-content">
       <form onSubmit={addIngredient}>
         <input
+          name="ingredient"
           className="ingredients-input"
           type="text"
           placeholder="e.g. Eggs"
-          name="ingredient"
         />
         <input
+          name="add-ingredients"
           className="button-submit"
           type="submit"
           value="+ Add ingredient"

@@ -1,4 +1,4 @@
-
+import React from 'react';
 import "../style/Recipe.css"
 import PropTypes from "prop-types";
 import ReactMarkdown from "react-markdown";
